@@ -1,0 +1,35 @@
+image:
+  repository: kran0/davmail-docker
+  tag: latest
+  pullPolicy: IfNotPresent
+
+resources: {}
+replicaCount: 1
+
+persistence:
+  enabled: true
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  size: 1Gi
+
+service:
+  type: ClusterIP
+  ports:
+    caldav: 1080
+    imap: 1143
+    ldap: 1389
+    pop: 1110
+    smtp: 1025
+
+env:
+  DAVMAIL_SERVER: "true"
+  DAVMAIL_ALLOWREMOTE: "true"
+  DAVMAIL_DISABLEUPDATECHECK: "true"
+  DAVMAIL_LOGFILEPATH: "/dev/stdout"
+  DAVMAIL_CALDAVPORT: "1080"
+  DAVMAIL_IMAPPORT: "1143"
+  DAVMAIL_LDAPPORT: "1389"
+  DAVMAIL_POPPORT: "1110"
+  DAVMAIL_SMTPPORT: "1025"
+  JAVA_OPTS: "-Xmx512M -Dsun.net.inetaddr.ttl=30"

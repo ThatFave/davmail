@@ -1,0 +1,6 @@
+apiVersion: v2
+name: davmail
+description: A Helm chart for DavMail Exchange Gateway
+type: application
+version: 0.1.0
+appVersion: "latest"

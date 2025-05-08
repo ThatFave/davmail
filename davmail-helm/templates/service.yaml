@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "davmail.fullname" . }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: caldav
+      port: {{ .Values.service.ports.caldav }}
+      targetPort: {{ .Values.service.ports.caldav }}
+    - name: imap
+      port: {{ .Values.service.ports.imap }}
+      targetPort: {{ .Values.service.ports.imap }}
+    - name: ldap
+      port: {{ .Values.service.ports.ldap }}
+      targetPort: {{ .Values.service.ports.ldap }}
+    - name: pop
+      port: {{ .Values.service.ports.pop }}
+      targetPort: {{ .Values.service.ports.pop }}
+    - name: smtp
+      port: {{ .Values.service.ports.smtp }}
+      targetPort: {{ .Values.service.ports.smtp }}
+  selector:
+    app: {{ include "davmail.name" . }}

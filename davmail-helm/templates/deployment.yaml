@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "davmail.fullname" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "davmail.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "davmail.name" . }}
+    spec:
+      containers:
+        - name: davmail
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+            {{- end }}
+          ports:
+            - containerPort: {{ .Values.service.ports.caldav }}
+            - containerPort: {{ .Values.service.ports.imap }}
+            - containerPort: {{ .Values.service.ports.ldap }}
+            - containerPort: {{ .Values.service.ports.pop }}
+            - containerPort: {{ .Values.service.ports.smtp }}
+          volumeMounts:
+            - name: davmail-config
+              mountPath: /davmail-config
+      volumes:
+        - name: davmail-config
+          persistentVolumeClaim:
+            claimName: {{ include "davmail.fullname" . }}-pvc
